@@ -8,6 +8,7 @@
  * Requires at least: 6.0
  * Requires PHP: 7.4
  * License: GPL2
+ * Requires Plugins: woocommerce
  */
 
 if (!defined('ABSPATH')) exit;
