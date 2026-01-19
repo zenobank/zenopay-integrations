@@ -8,18 +8,17 @@ Stable tag: 1.0.0
 License: GPLv2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-Accept crypto in Easy Digital Downloads with 0.1% fee
+Accept crypto on Easy Digital Downloads with 0.1% fee
 
 == Description ==
 
-Accept crypto in Easy Digital Downloads with 0.1% fee
+Accept crypto on Easy Digital Downloads with 0.1% fee
 
 Zeno Crypto Checkout for Easy Digital Downloads lets your store receive crypto payments directly through **on-chain transactions** or **Binance Pay**.
 
-[Watch how to install and set it up](https://www.youtube.com/watch?v=xZVmgBSqfPY)
 
 See exactly what your customers will experience at checkout:  
-[Try checkout demo](https://demo.zenobank.io/)
+[Try checkout demo](https://pay.zenobank.io/demo)
 
 Questions? Check the [FAQs](https://zenobank.io/#faqs)  
 Or reach out through [Telegram](https://t.me/zenobank)
