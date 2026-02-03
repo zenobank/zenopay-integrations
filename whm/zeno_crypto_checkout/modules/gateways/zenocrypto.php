@@ -73,18 +73,11 @@ function zenocrypto_link($params)
 {
     // Gateway Configuration Parameters
     $apiKey = $params['api_key'];
-
-
-
     if (empty($apiKey)) {
         return '<div class="alert alert-danger">Gateway misconfigured: missing API key.</div>';
     }
 
-    $secretKey = Capsule::table('tblpaymentgateways')
-        ->where('gateway', 'zenocrypto')
-        ->where('setting', 'secret_key')
-        ->value('value');
-
+    $secretKey = $params['secret_key'];
     if (empty($secretKey)) {
         return '<div class="alert alert-danger">Gateway misconfigured: missing secret key.</div>';
     }

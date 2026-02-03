@@ -10,8 +10,6 @@ require_once __DIR__ . '/../../../init.php';
 require_once __DIR__ . '/../../../includes/gatewayfunctions.php';
 require_once __DIR__ . '/../../../includes/invoicefunctions.php';
 
-use WHMCS\Database\Capsule;
-
 // Detect module name from filename.
 $gatewayModuleName = basename(__FILE__, '.php');
 
@@ -56,17 +54,10 @@ $currencyCode = $data['data']['priceCurrency'];
 $paymentFee = 0;
 $hash = $data['data']['verificationToken'];
 
-$transactionStatus = 'Success';
-
-logActivity('invoiceId: ' . $invoiceId, 0);
-
 /**
  * Validate callback authenticity.
  */
-$secretKey = Capsule::table('tblpaymentgateways')
-    ->where('gateway', 'zenocrypto')
-    ->where('setting', 'secret_key')
-    ->value('value');
+$secretKey = $gatewayParams['secret_key'];
 
 if (empty($secretKey)) {
     logTransaction($gatewayParams['name'], $rawBody, 'Missing secret key');
@@ -80,10 +71,8 @@ $expectedToken = hash_hmac(
     $secretKey
 );
 
-
 if (!hash_equals($expectedToken, (string) $hash)) {
-    $transactionStatus = 'Verification Token Failure';
-    logTransaction($gatewayParams['name'], $rawBody, $transactionStatus);
+    logTransaction($gatewayParams['name'], $rawBody, 'Verification Token Failure');
     http_response_code(403);
     exit('Verification token mismatch');
 }
@@ -127,9 +116,7 @@ checkCbTransID($transactionId);
  * @param string|array $debugData    Data to log
  * @param string $transactionStatus  Status
  */
-logTransaction($gatewayParams['name'], $rawBody, $transactionStatus);
-
-
+logTransaction($gatewayParams['name'], $rawBody, 'Success');
 
 /**
  * Add Invoice Payment.

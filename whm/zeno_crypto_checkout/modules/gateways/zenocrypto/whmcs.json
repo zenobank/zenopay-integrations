@@ -18,10 +18,12 @@
   "authors": [
     {
       "name": "Anurag Rathore",
+      "email": "anurag@whmcshunk.com",
       "homepage": "https://www.whmcshunk.com/"
     },
     {
       "name": "Zeno Bank",
+      "email": "hello@zenobank.io",
       "homepage": "https://zenobank.io/"
     }
   ]
