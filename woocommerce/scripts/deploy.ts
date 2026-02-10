@@ -153,12 +153,12 @@ function step1_verifyFiles() {
   success("Plugin directory, main PHP file, and readme.txt all present.");
 }
 
-/** Step 2: Clean .DS_Store, ._*, and Thumbs.db from plugin dir. */
+/** Step 2: Clean .DS_Store, ._*, and Thumbs.db from svn-plugin dir (trunk + assets). */
 function step2_clean() {
-  info("Cleaning junk files from plugin directory...");
+  info("Cleaning junk files from svn-plugin directory...");
   let removed = 0;
 
-  for (const file of walk(PLUGIN_DIR)) {
+  for (const file of walk(SVN_DIR)) {
     const name = file.split("/").pop()!;
     if (JUNK_PATTERNS.includes(name) || name.startsWith("._")) {
       unlinkSync(file);
@@ -289,7 +289,7 @@ function step6_versionConsistency(): string {
   return stableTag;
 }
 
-/** Step 7: Stage changes, commit trunk, and create a version tag in SVN. */
+/** Step 7: Stage changes in trunk + assets, commit, and create a version tag in SVN. */
 async function step7_svnPublish(version: string, force: boolean) {
   if (!existsSync(PLUGIN_DIR)) {
     warn(`SVN trunk not found: ${PLUGIN_DIR}`);
@@ -297,14 +297,14 @@ async function step7_svnPublish(version: string, force: boolean) {
     return;
   }
 
-  // Stage new/changed files
-  info("Staging SVN changes...");
-  run("svn add --force .", PLUGIN_DIR);
+  // Stage new/changed files across entire SVN working copy (trunk + assets)
+  info("Staging SVN changes (trunk + assets)...");
+  run("svn add --force trunk assets", SVN_DIR);
 
-  // Remove files deleted from trunk
+  // Remove missing files from SVN
   try {
     const status = execSync("svn status", {
-      cwd: PLUGIN_DIR,
+      cwd: SVN_DIR,
       encoding: "utf-8",
     });
     const missing = status
@@ -314,7 +314,7 @@ async function step7_svnPublish(version: string, force: boolean) {
       .filter(Boolean);
 
     for (const file of missing) {
-      run(`svn rm "${file}"`, PLUGIN_DIR);
+      run(`svn rm "${file}"`, SVN_DIR);
     }
   } catch {
     // No missing files
@@ -333,8 +333,12 @@ async function step7_svnPublish(version: string, force: boolean) {
     }
   }
 
-  info("Committing trunk...");
-  run(`svn commit trunk -m "Deploy version ${version}"`, SVN_DIR);
+  // Commit trunk + assets together
+  info("Committing trunk and assets...");
+  run(
+    `svn commit trunk assets -m "Deploy version ${version}"`,
+    SVN_DIR
+  );
 
   info(`Creating tag ${version}...`);
   run(`svn cp trunk "tags/${version}"`, SVN_DIR);
