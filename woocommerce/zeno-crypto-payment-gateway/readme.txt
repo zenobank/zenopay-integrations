@@ -18,7 +18,7 @@ Start Accepting Crypto Payments in **2 minutes**.
 
 Binance Pay payments go directly to your Binance account (no merchant account required).
 
-For On Chain payments (Arbitrum, Base, Ethereum, etc.), choose between Custodial and Non Custodial mode.
+For On Chain payments (Arbitrum, Base, Ethereum, etc.), choose between **Custodial and Non Custodial mode**.
 
 **Custodial**: we hold the funds for you.
 **Non Custodial**: funds go directly to your own wallet.
