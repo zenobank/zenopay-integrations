@@ -407,4 +407,9 @@ wp-config.php
 
 # ---- Turborepo ----
 .turbo/
+
+# ---- pnpm local store ----
+/.pnpm-store/
+/.pnpm-store/v10/
 .pnpm-store/*
+.claude/*
