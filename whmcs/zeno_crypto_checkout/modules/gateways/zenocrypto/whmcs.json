@@ -13,7 +13,8 @@
   "support": {
     "homepage": "https://zenobank.io/",
     "docs_url": "https://docs.zenobank.io",
-    "email": "hello@zenobank.io"
+    "email": "hello@zenobank.io",
+    "support_url": "https://zenobank.io/support"
   },
   "authors": [
     {

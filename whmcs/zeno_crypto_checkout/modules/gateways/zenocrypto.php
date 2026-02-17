@@ -23,16 +23,16 @@ function zenocrypto_MetaData()
 }
 
 /**
- * Define gateway configuration options.
+ * Ensure a secret key exists for webhook verification.
  */
-function zenocrypto_config()
+function zenocrypto_ensureSecretKey()
 {
-    $setting = Capsule::table('tblpaymentgateways')
+    $existing = Capsule::table('tblpaymentgateways')
         ->where('gateway', 'zenocrypto')
         ->where('setting', 'secret_key')
         ->value('value');
 
-    if (!$setting) {
+    if (!$existing) {
         $hex = bin2hex(random_bytes(16));
         $uuid = substr($hex, 0, 8) . '-' .
             substr($hex, 8, 4) . '-' .
@@ -46,23 +46,36 @@ function zenocrypto_config()
             'value'   => $uuid,
         ]);
     }
+}
+
+/**
+ * Define gateway configuration options.
+ */
+function zenocrypto_config()
+{
+    try {
+        zenocrypto_ensureSecretKey();
+    } catch (\Exception $e) {
+        // Silently fail during gateway discovery
+    }
 
     return array(
-        // the friendly display name for a payment gateway should be
-        // defined here for backwards compatibility
         'FriendlyName' => array(
             'Type' => 'System',
             'Value' => 'Zeno Crypto Gateway',
         ),
-        // a text field type allows for single line text input
         'api_key' => array(
             'FriendlyName' => 'API Key',
-            'Type' => 'text',
+            'Type' => 'password',
             'Size' => '40',
             'Default' => '',
-            'Description' => 'Enter your API key here',
+            'Description' => '<a href="https://dashboard.zenobank.io/" target="_blank">Get your API key here</a>',
         ),
-
+        'support_info' => array(
+            'FriendlyName' => 'Support',
+            'Type' => 'System',
+            'Value' => '<a href="https://zenobank.io/support" target="_blank">Have suggestions, problems, or want a new feature? Contact us</a>',
+        ),
     );
 }
 
@@ -78,6 +91,13 @@ function zenocrypto_link($params)
     }
 
     $secretKey = $params['secret_key'];
+    if (empty($secretKey)) {
+        zenocrypto_ensureSecretKey();
+        $secretKey = Capsule::table('tblpaymentgateways')
+            ->where('gateway', 'zenocrypto')
+            ->where('setting', 'secret_key')
+            ->value('value');
+    }
     if (empty($secretKey)) {
         return '<div class="alert alert-danger">Gateway misconfigured: missing secret key.</div>';
     }
