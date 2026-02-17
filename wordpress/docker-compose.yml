@@ -30,7 +30,7 @@ services:
       - ${PWD}/../easy-digital-downloads/plugin/trunk:/var/www/html/wp-content/plugins/zeno-crypto-checkout-for-easy-digital-downloads
 
   phpmyadmin:
-    image: phpmyadmin/phpmyadmin
+    image: phpmyadmin:latest
     restart: always
     depends_on:
       - db
