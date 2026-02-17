@@ -95,6 +95,12 @@ class ZenocpgWebhookModuleFrontController extends ModuleFrontController
             return false;
         }
 
+        $completed_status = (int) Configuration::get('ZENO_CPG_OS_COMPLETED') ?: (int) Configuration::getGlobalValue('ZENO_PAYMENT_ACCEPTED') ?: (int) Configuration::get('PS_OS_PAYMENT');
+
+        if ((int) $order->current_state === $completed_status) {
+            return true;
+        }
+
         if ((int) $order->current_state === (int) $new_status) {
             return true;
         }
