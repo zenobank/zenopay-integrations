@@ -416,3 +416,6 @@ wp-config.php
 /prestashop/ide-core/
 .pnpm-store/*
 .claude/*
+
+# ---- Local WordPress Docker data ----
+/wordpress/wp_data/
