@@ -1,10 +1,6 @@
-import { cpSync, existsSync, mkdirSync, readdirSync, readFileSync, rmSync } from "node:fs";
+import { cpSync, existsSync, mkdirSync, readdirSync, rmSync } from "node:fs";
 import { basename, join, resolve } from "node:path";
 import { spawnSync } from "node:child_process";
-
-type PackageJson = {
-  version: string;
-};
 
 const PLUGIN_SLUG = "zeno-crypto-checkout-for-easy-digital-downloads";
 
@@ -52,23 +48,12 @@ function copyFiltered(source: string, destination: string): void {
   }
 }
 
-function getVersion(): string {
-  const packageJsonPath = join(ROOT_DIR, "package.json");
-  const packageJson = JSON.parse(readFileSync(packageJsonPath, "utf8")) as PackageJson;
-  const version = packageJson.version?.trim();
-  if (!version) {
-    throw new Error("Version not found in package.json");
-  }
-  return version;
-}
-
 function run(): void {
   if (!existsSync(SOURCE_DIR)) {
     throw new Error("plugin/trunk directory not found");
   }
 
-  const version = getVersion();
-  const zipName = `${PLUGIN_SLUG}-v${version}.zip`;
+  const zipName = `${PLUGIN_SLUG}.zip`;
   const zipPath = join(DIST_DIR, zipName);
 
   rmSync(TEMP_DIR, { recursive: true, force: true });
