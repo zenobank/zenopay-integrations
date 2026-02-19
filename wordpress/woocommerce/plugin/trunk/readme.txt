@@ -52,3 +52,9 @@ Questions? Check the [FAQs](https://zenobank.io/#faqs)
 = 1.0.12 =
 
 * Updated readme
+
+== External services ==
+
+This plugin sends order data (amount, currency) to api.zenobank.io to process crypto payments.
+
+[Terms of Service](https://zenobank.io/terms) | [Privacy Policy](https://zenobank.io/privacy)

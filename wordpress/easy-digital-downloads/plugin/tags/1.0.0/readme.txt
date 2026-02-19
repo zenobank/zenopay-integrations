@@ -34,6 +34,11 @@ Or reach out through [Telegram](https://t.me/zenobank)
 7. In your EDD store, open the **Downloads -> Settings -> Payments -> Zeno** settings and paste the API key.  
 8. Save changes, enable the gateway, and start accepting crypto payments.
 
+== External services ==
+
+This plugin sends order data (amount, currency) to api.zenobank.io to process crypto payments.
+
+[Terms of Service](https://zenobank.io/terms) | [Privacy Policy](https://zenobank.io/privacy)
 
 == Changelog ==
 
